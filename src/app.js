@@ -1,3 +1,5 @@
+require("dotenv")
+require('module-alias/register')
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -6,7 +8,15 @@ const logger = require('morgan');
 const session = require("express-session")
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const passport = require("passport");
+const passportLocal = require("passport-local");
+//
+const userServices = require("./services/api/v1/auth/user.services")
+//
 
+
+
+//
 const app = express();
 
 app.use(session({
@@ -27,11 +37,25 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use("local", passportLocal);
+passport.serializeUser(function (user, done) {
+  done(null, user.id); //Lưu user.id vào session
+});
+
+passport.deserializeUser(async function (id, done) {
+  const user = await userServices.getUsers(id) //Truy vấn tới database để trả về thông tin user
+  done(null, user);
+});
+//
+const authRouter = require("./routes/api/v1/auth/authRouter.js")
+
 
 //Route
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+authRouter(app);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
