@@ -1,13 +1,13 @@
 {
   "name": "backend",
   "version": "0.0.0",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
     "dev": "nodemon ./bin/www",
-    "start": "node ./bin/www",
+    "start": "nodemon ./bin/www",
     "postinstall": "npx sequelize-cli db:migrate",
     "build": "npm run postinstall && npm run vercel-build",
-    "main": "./src/app.js"
+    "main": "app.js"
   },
   "dependencies": {
     "@vercel/postgres": "^0.9.0",
@@ -29,6 +29,9 @@
     "sequelize": "^6.37.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.4",
+    "babel-plugin-module-resolver": "^5.0.2",
     "sequelize-cli": "^6.6.2"
   },
   "_moduleAliases": {
@@ -44,5 +47,34 @@
     "@transformers": "./src/transformers",
     "@utils": "./src/utils",
     "@config": "./config"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ],
+    "plugins": [
+      [
+        "module-resolver",
+        {
+          "root": [
+            "./"
+          ],
+          "alias": {
+            "@controllers": "./src/controllers",
+            "@core": "./src/core",
+            "@helpers": "./src/helpers",
+            "@middlewares": "./src/middlewares",
+            "@models": "./src/models",
+            "@passports": "./src/passports",
+            "@repositories": "./src/repositories",
+            "@routes": "./src/routes",
+            "@services": "./src/services",
+            "@transformers": "./src/transformers",
+            "@utils": "./src/utils",
+            "@config": "./config"
+          }
+        }
+      ]
+    ]
   }
 }
