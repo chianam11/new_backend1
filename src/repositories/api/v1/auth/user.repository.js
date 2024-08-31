@@ -1,6 +1,6 @@
 //Tương ứng với model User
-const { User } = require("@models/index.js");
-const Repository = require("@core/repository.js");
+const { User } = require("../../../../models/index");
+const Repository = require("../../../../core/repository");
 module.exports = class extends Repository {
     getModel() {
         return User;

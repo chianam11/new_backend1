@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt")
-const serviceUser = require("@services/api/v1/auth/user.services.js")
-const { successResponse, errorResponse } = require("@helpers/response.js");
+const serviceUser = require("../../../../services/api/v1/auth/user.services")
+const { successResponse, errorResponse } = require("../../../../helpers/response");
 module.exports = {
     register: async (req, res, next) => {
         try {
@@ -26,6 +26,6 @@ module.exports = {
         }
     },
     login(req, res, next) {
-        res.json({})
+        res.json({ messgae: "hello" })
     }
 }
